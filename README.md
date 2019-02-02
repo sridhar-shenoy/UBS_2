@@ -3,7 +3,7 @@
 After cloning:
 
 1) Generating logs: Run Log_Generator/Log_Generator.py - there will result multiple logs of proxy, event and gateway kinds in folders,
-representing a complex system.
+representing a complex system through which order requests flow.
 
 2) Adding logs to the database: after using ./bin/elasticsearch in /elasticsearch-6.5.4 to run elasticsearch, navigate to /logstash-6.5.4
 and replace all D:/Desktop in logstash.conf with the directory containing the cloned folder, and the elasticsearch IP at the bottom with 
