@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: AdminPage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: AdminPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+// import SearchField from "./SearchField"
+import PropTypes from 'prop-types'
+import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+// import OrderAnalysis from './OrderAnalysis'
+import DashBoardBar from './DashBoardBar'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import {compose} from 'redux'
+import {connect} from 'react-redux'
+import Typography from '@material-ui/core/Typography'
+import DarkThemeSwitch from './utils/DarkThemeSwitch.js'
+import ControlPanel from './utils/ControlPanel.js'
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+});
+
+/**
+ * This is the the admin page view of the dashboard
+ */
+export class AdminPage extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            snack_message: '',
+            input: ''
+        };
+        this.callSnackBar = this.callSnackBar.bind(this);
+    }
+
+
+    // Override the 'collide_type' array in 'this.state' with the types(proxy, event, gateway) being put in the 'collideType'
+    updateCollideId(collideType) {
+        this.setState({collide_type: collideType})
+    }
+
+    callSnackBar(message){
+        this.setState({snack_message: message})
+    }
+
+    updateDarkLightTheme(){
+        console.log('yeah!');
+        // console.log(this.state.darkTheme + !this.state.darkTheme)
+        this.setState({darkTheme: !this.state.darkTheme})
+    }
+
+    getPickerColor(logType, colorHex){
+        console.log(logType, colorHex);
+        const logColor = this.state.logColor;
+        if(logType === 'proxy'){
+            logColor['proxy'] = colorHex
+        } else if(logType === 'event'){
+            logColor['event'] = colorHex
+        } else if(logType === 'gateway'){
+            logColor['gateway'] = colorHex
+        }
+        this.setState({logColor});
+        console.log(logColor)
+    }
+
+    getSearchID = () => {
+      return this.state.input
+    };
+
+    render() {
+        const { classes } = this.props;
+        // console.log(this.props)
+        return (
+            // Change theme(dark, light, style) upon changing 'theme'
+            &lt;MuiThemeProvider
+                theme={createMuiTheme({
+                    palette: {
+                        primary: this.props.palette['primary'],
+                        secondary: this.props.palette.secondary,
+                        type: (this.props.darkTheme ? 'dark' : 'light'),
+                    },
+                })}
+            >
+                &lt;CssBaseline/>
+                &lt;div id = "dashboard_container">
+                    &lt;div className={classes.root}>
+                        &lt;Grid container spacing={24}>
+                            {/* console.log('redux store call: ' + this.props.count)}
+                            {/* The appbar now is containing the search bar, setting*/}
+                            &lt;Grid item xs={12}>
+                                &lt;DashBoardBar/>
+                            &lt;/Grid>
+                        &lt;/Grid>
+                        {/*
+                          &lt;AdminControlTable />
+                          // this is for the following paper style style={{marginTop: '0.5cm'}}
+                        */}
+                        &lt;Paper className={classes.paper} >
+                            &lt;Typography variant='title'>Default Theme Setting:&lt;/Typography>
+                            &lt;DarkThemeSwitch/>
+                            &lt;Typography variant='title' style={{marginBottom: '0.3cm'}}>Default Log Coloring:&lt;/Typography>
+                            &lt;ControlPanel className={classes.Control} />
+                        &lt;/Paper>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/MuiThemeProvider>
+        )
+    }
+}
+
+AdminPage.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+function mapStateToProps(state) {
+    // console.log('mapStateToProps, AdminPage', state)
+    return {
+        palette: state.palette,
+        darkTheme: state.darkTheme,
+    }
+}
+
+const ExportEnhance = compose(
+    withStyles(styles),
+    connect(mapStateToProps),
+);
+
+export default ExportEnhance(AdminPage)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AdminPage.html">AdminPage</a></li><li><a href="ClickActionOfTableInModal.html">ClickActionOfTableInModal</a></li><li><a href="ColorPickerItem.html">ColorPickerItem</a></li><li><a href="ControlPanel.html">ControlPanel</a></li><li><a href="DarkThemeSwitch.html">DarkThemeSwitch</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="DashBoardBar.html">DashBoardBar</a></li><li><a href="FilterField.html">FilterField</a></li><li><a href="SearchBarInModal.html">SearchBarInModal</a></li><li><a href="SettingsButton.html">SettingsButton</a></li><li><a href="SimpleModal.html">SimpleModal</a></li><li><a href="SimpleSnackbar.html">SimpleSnackbar</a></li><li><a href="TableInModal.html">TableInModal</a></li><li><a href="TablePaginationActions.html">TablePaginationActions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#onChangePickerColor">onChangePickerColor</a></li><li><a href="global.html#traceOrder">traceOrder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 07 2018 09:35:51 GMT+0800 (HKT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

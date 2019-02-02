@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: SearchBarInModal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: SearchBarInModal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import InputBase from '@material-ui/core/InputBase';
+import {fade} from '@material-ui/core/styles/colorManipulator';
+import {withStyles} from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
+
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    },
+    title: {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+        },
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&amp;:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing.unit,
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        width: theme.spacing.unit * 9,
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+        width: '100%',
+    },
+    inputInput: {
+        paddingTop: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
+        paddingBottom: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit * 10,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: 120,
+            '&amp;:focus': {
+                width: 200,
+            },
+        },
+    },
+});
+
+/**
+ * This handles the searching feature for individual logs
+ */
+class SearchBarInModal extends React.Component {
+
+
+    handleKeyPressForFind = (e) => {
+        if (e.key === 'Enter') {
+            window.find(e.target.value)
+        }
+    };
+
+    static updateInputValue(evt) {
+        // console.log(evt);
+        window.find(evt.target.value)
+    }
+
+    render(){
+        const { classes } = this.props;
+        return (
+            &lt;div className={classes.root}>
+                &lt;AppBar position="static">
+                    &lt;Toolbar>
+                        &lt;Typography className={classes.title} variant="h6" color="inherit" noWrap>
+                            {this.props.Idofthe}
+                        &lt;/Typography>
+                        &lt;div className={classes.grow} />
+                        &lt;div className={classes.search}>
+                            &lt;div className={classes.searchIcon}>
+                                &lt;SearchIcon />
+                            &lt;/div>
+                            &lt;InputBase
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                onKeyPress={this.handleKeyPressForFind}
+                            />
+                        &lt;/div>
+                    &lt;/Toolbar>
+                &lt;/AppBar>
+            &lt;/div>
+        );
+    }
+}
+
+SearchBarInModal.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(SearchBarInModal)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AdminPage.html">AdminPage</a></li><li><a href="ClickActionOfTableInModal.html">ClickActionOfTableInModal</a></li><li><a href="ColorPickerItem.html">ColorPickerItem</a></li><li><a href="ControlPanel.html">ControlPanel</a></li><li><a href="DarkThemeSwitch.html">DarkThemeSwitch</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="DashBoardBar.html">DashBoardBar</a></li><li><a href="FilterField.html">FilterField</a></li><li><a href="SearchBarInModal.html">SearchBarInModal</a></li><li><a href="SettingsButton.html">SettingsButton</a></li><li><a href="SimpleModal.html">SimpleModal</a></li><li><a href="SimpleSnackbar.html">SimpleSnackbar</a></li><li><a href="TableInModal.html">TableInModal</a></li><li><a href="TablePaginationActions.html">TablePaginationActions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#onChangePickerColor">onChangePickerColor</a></li><li><a href="global.html#traceOrder">traceOrder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 07 2018 09:35:51 GMT+0800 (HKT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

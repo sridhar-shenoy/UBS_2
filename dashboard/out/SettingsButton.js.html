@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: SettingsButton.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: SettingsButton.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+import IconButton from '@material-ui/core/IconButton'
+import SettingsIcon from '@material-ui/icons/Settings'
+import DarkThemeSwitch from './utils/DarkThemeSwitch.js'
+import FilterField from './FilterField'
+import Paper from '@material-ui/core/Paper'
+import {withStyles} from '@material-ui/core/styles'
+import 'rodal/lib/rodal.css'
+import Typography from '@material-ui/core/Typography'
+import NoSsr from '@material-ui/core/NoSsr'
+import Modal from '@material-ui/core/Modal'
+import ControlPanel from './utils/ControlPanel.js'
+
+// const customStyles={ height: 'auto', bottom: 'auto', top: '50%', transform: 'translateY(-60%)', width: '30% ', maxHeight: '60%', overflow: 'auto' };
+
+const styles = theme => ({
+    paperContent : {
+        position: 'absolute',
+        height: 'auto',
+        bottom: 'auto',
+        top: '50%',
+        left: '50%',
+        width: '30%',
+        transform: 'translate(-50%, -50%)',
+        padding: theme.spacing.unit * 3,
+        backgroundColor: theme.palette.background.paper
+    },
+    paper: {
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary
+    },
+    Control: {
+        padding: theme.spacing.unit * 2
+    }
+});
+
+/**
+ * This is the pop up modal of the setting button
+ */
+class SettingsButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.props.onRef(this);
+        this.state = {
+            visible: false,
+        }
+        // this.handleOpen = this.handleOpen.bind(this)
+    }
+
+    confirmChange = () => {
+        console.log('Change This Plz')
+    };
+
+    handleOpen = () => {
+        this.setState({visible: true})
+    };
+
+    handleClose = () => {
+        this.setState({visible: false})
+    };
+
+    render() {
+        const { classes } = this.props;
+        return (
+            &lt;div>
+                &lt;IconButton color='inherit' onClick={this.handleOpen.bind(this)}>
+                    &lt;SettingsIcon />
+                &lt;/IconButton>
+                &lt;Modal
+                    open={this.state.visible}
+                    onClose={this.handleClose.bind(this)}
+                >
+                    &lt;NoSsr>
+                        &lt;Paper className={classes.paperContent}>
+                            &lt;Typography variant='title'>Theme Setting:&lt;/Typography>
+                            {/*&lt;SessionTitle title={'Theme Setting:'} />*/}
+                            &lt;DarkThemeSwitch/>
+                            &lt;Typography variant='title' style={{marginBottom: '0.3cm'}}>Log Coloring:&lt;/Typography>
+                            {/*&lt;SessionTitle title={'Log Coloring:'} />*/}
+                            &lt;ControlPanel className={classes.Control} />
+                            &lt;Paper className={classes.paper} style={{marginTop: '0.5cm'}}>
+                                &lt;FilterField/>
+                            &lt;/Paper>
+                        &lt;/Paper>
+                    &lt;/NoSsr>
+                &lt;/Modal>
+            &lt;/div>
+        )
+    }
+}
+
+export default withStyles(styles) (SettingsButton)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AdminPage.html">AdminPage</a></li><li><a href="ClickActionOfTableInModal.html">ClickActionOfTableInModal</a></li><li><a href="ColorPickerItem.html">ColorPickerItem</a></li><li><a href="ControlPanel.html">ControlPanel</a></li><li><a href="DarkThemeSwitch.html">DarkThemeSwitch</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="DashBoardBar.html">DashBoardBar</a></li><li><a href="FilterField.html">FilterField</a></li><li><a href="SearchBarInModal.html">SearchBarInModal</a></li><li><a href="SettingsButton.html">SettingsButton</a></li><li><a href="SimpleModal.html">SimpleModal</a></li><li><a href="SimpleSnackbar.html">SimpleSnackbar</a></li><li><a href="TableInModal.html">TableInModal</a></li><li><a href="TablePaginationActions.html">TablePaginationActions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#onChangePickerColor">onChangePickerColor</a></li><li><a href="global.html#traceOrder">traceOrder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 07 2018 09:35:51 GMT+0800 (HKT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

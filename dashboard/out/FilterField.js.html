@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: FilterField.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: FilterField.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import {MuiThemeProvider, withStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import NoSsr from '@material-ui/core/NoSsr';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
+import MenuItem from '@material-ui/core/MenuItem';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Select from 'react-select'
+import {emphasize} from '@material-ui/core/styles/colorManipulator';
+import {connect} from 'react-redux'
+import {compose} from 'redux'
+
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    input: {
+        display: 'flex',
+        padding: 0,
+    },
+    valueContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        flex: 1,
+        alignItems: 'center',
+    },
+    chip: {
+        margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    },
+    chipFocused: {
+        backgroundColor: emphasize(
+            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            0.08,
+        ),
+    },
+    noOptionsMessage: {
+        padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    },
+    singleValue: {
+        fontSize: 16,
+    },
+    placeholder: {
+        position: 'absolute',
+        left: 2,
+        fontSize: 16,
+    },
+    paper: {
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+    },
+    divider: {
+        height: theme.spacing.unit * 2,
+    },
+});
+
+function NoOptionsMessage(props) {
+    return (
+        &lt;Typography
+            color="textSecondary"
+            className={props.selectProps.classes.noOptionsMessage}
+            {...props.innerProps}
+        >
+            {props.children}
+        &lt;/Typography>
+    );
+}
+
+function inputComponent({ inputRef, ...props }) {
+    return &lt;div ref={inputRef} {...props} />;
+}
+
+function Control(props) {
+    return (
+        &lt;TextField
+            fullWidth
+            InputProps={{
+                inputComponent,
+                inputProps: {
+                    className: props.selectProps.classes.input,
+                    inputRef: props.innerRef,
+                    children: props.children,
+                    ...props.innerProps,
+                },
+            }}
+            {...props.selectProps.textFieldProps}
+        />
+    );
+}
+
+function Option(props) {
+    return (
+        &lt;MenuItem
+            buttonRef={props.innerRef}
+            selected={props.isFocused}
+            component="div"
+            style={{
+                fontWeight: props.isSelected ? 500 : 400,
+            }}
+            {...props.innerProps}
+        >
+            {props.children}
+        &lt;/MenuItem>
+    );
+}
+
+function Placeholder(props) {
+    return (
+        &lt;Typography
+            color="textSecondary"
+            className={props.selectProps.classes.placeholder}
+            {...props.innerProps}
+        >
+            {props.children}
+        &lt;/Typography>
+    );
+}
+
+function SingleValue(props) {
+    return (
+        &lt;Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+            {props.children}
+        &lt;/Typography>
+    );
+}
+
+function ValueContainer(props) {
+    return &lt;div className={props.selectProps.classes.valueContainer}>{props.children}&lt;/div>;
+}
+
+function MultiValue(props) {
+    return (
+        &lt;Chip
+            tabIndex={-1}
+            label={props.children}
+            className={classNames(props.selectProps.classes.chip, {
+                [props.selectProps.classes.chipFocused]: props.isFocused,
+            })}
+            onDelete={props.removeProps.onClick}
+            deleteIcon={&lt;CancelIcon {...props.removeProps} />}
+        />
+    );
+}
+
+function Menu(props) {
+    return (
+        &lt;Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+            {props.children}
+        &lt;/Paper>
+    );
+}
+
+const components = {
+    Control,
+    Menu,
+    MultiValue,
+    NoOptionsMessage,
+    Option,
+    Placeholder,
+    SingleValue,
+    ValueContainer,
+};
+
+/**
+ * This is the filter field in the setting button modal for filtering the logs in result table
+ */
+class FilterField extends React.Component {
+    handleFilterFieldChange = name => value => {
+        this.props.updateColumnFilterObject(value)
+    };
+
+    constructor(props){
+        super(props);
+        this.state = {
+            single: null,
+            multi: null,
+        };
+        this.handleFilterFieldChange = this.handleFilterFieldChange.bind(this)
+    }
+
+    render() {
+        const { classes, theme } = this.props;
+        const selectStyles = {
+            input: base => ({
+                ...base,
+                color: this.props.palette.primary,
+                '&amp; input': {
+                    font: 'inherit',
+                },
+            }),
+        };
+
+        return (
+            &lt;MuiThemeProvider theme={theme}>
+
+            &lt;div className={classes.root}>
+                &lt;NoSsr>
+                &lt;Select
+                    classes={classes}
+                    styles={selectStyles}
+                    textFieldProps={{
+                        label: 'Filter field',
+                        InputLabelProps: {
+                            shrink: true,
+                        },
+                    }}
+                    options={this.props.columnFilterOption}
+                    components={components}
+                    value={this.props.columnFilterObject}
+                    onChange={this.handleFilterFieldChange('multi')}
+                    placeholder="Select multiple fix tags"
+                    isMulti
+                    cacheOptions
+                />
+                &lt;/NoSsr>
+            &lt;/div>
+            &lt;/MuiThemeProvider>
+        );
+    }
+}
+
+FilterField.propTypes = {
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+};
+
+function mapStateToProps(state){
+    return {
+        palette: state.palette,
+        columnFilterOption: state.columnFilterOption,
+        columnFilterObject: state.columnFilterObject,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        updateColumnFilterObject: (columnFilterObject) => {
+            console.log(columnFilterObject);
+            const action = {
+                type: 'UPDATE_COLUMNFILTEROBJECT',
+                payload: {columnFilterObject: columnFilterObject}
+            };
+            dispatch(action)
+        }
+    }
+}
+
+const ExportEnhance = compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps)
+);
+
+export default ExportEnhance(FilterField);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AdminPage.html">AdminPage</a></li><li><a href="ClickActionOfTableInModal.html">ClickActionOfTableInModal</a></li><li><a href="ColorPickerItem.html">ColorPickerItem</a></li><li><a href="ControlPanel.html">ControlPanel</a></li><li><a href="DarkThemeSwitch.html">DarkThemeSwitch</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="DashBoardBar.html">DashBoardBar</a></li><li><a href="FilterField.html">FilterField</a></li><li><a href="SearchBarInModal.html">SearchBarInModal</a></li><li><a href="SettingsButton.html">SettingsButton</a></li><li><a href="SimpleModal.html">SimpleModal</a></li><li><a href="SimpleSnackbar.html">SimpleSnackbar</a></li><li><a href="TableInModal.html">TableInModal</a></li><li><a href="TablePaginationActions.html">TablePaginationActions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#onChangePickerColor">onChangePickerColor</a></li><li><a href="global.html#traceOrder">traceOrder</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 07 2018 09:35:51 GMT+0800 (HKT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

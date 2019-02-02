@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/TableInModal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/TableInModal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography'
+import {connect} from 'react-redux'
+import {compose} from 'redux'
+import {withStyles} from '@material-ui/core/styles';
+import ClickActionOfTableInModal from './ClickActionOfTableInModal';
+const styles = theme => ({
+    root: {
+        position: 'absolute',
+        marginTop: theme.spacing.unit * 3,
+    },
+    table: {
+        minWidth: 700,
+        maxHeight: '90%',
+        width: '100%',
+        tableLayout: 'fixed',
+    },
+    row: {
+        height:'8px',
+        width: '10%',
+    },
+    cellID:{
+        width: '20%',
+    },
+    cellCO:{
+        width: '80%',
+        overflow: 'hidden',
+        wordWrap: 'break-word',
+    },
+});
+
+/**
+ * This is component for the table in the pop up after clicking in log showing the content of the app
+ */
+class TableInModal extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuOpen: false,
+            row_fix_id: null,
+            row_fix_content : null,
+            anchorEl: null,
+        }
+    }
+
+    handleMenuClose(){
+        this.setState({menuOpen: false})
+    }
+
+    handleRequestSort = (event, property) => {
+        const orderBy = property;
+        let order = 'desc';
+        if (this.state.orderBy === property &amp;&amp; this.state.order === 'desc') {
+            order = 'asc';
+        }
+        this.setState({ order, orderBy });
+    };
+
+    handleTableInModalRowClick = (event, fix_id, fix_content) => {
+        if (event.type === 'contextmenu') {
+            this.setState({menuOpen: true});    
+            this.setState({row_fix_id: fix_id});
+            this.setState({row_fix_content: fix_content});
+            this.setState({anchorEl: event.currentTarget});
+            event.preventDefault()
+        }
+    };
+
+    handleMenuClickClose(){
+        this.setState({menuOpen: false});
+        this.props.appendColumnFilter(this.state.row_fix_id)
+
+    }
+
+    render() {
+        const { classes } = this.props;
+        let arr_key = Object.keys(this.props.content);
+        let arr_val = Object.values(this.props.content);
+        var result = [];
+        arr_key.forEach((key, i) => result.push({
+                id:i,
+                key:key,
+                value:arr_val[i],
+            }
+        ));
+        return (
+            &lt;Paper className={classes.root}>
+                &lt;Table className={classes.table}>
+                    &lt;TableHead>
+                        &lt;TableRow>
+                            &lt;TableCell className={classes.cellID} >&lt;Typography variant='h6'>Field&lt;/Typography>&lt;/TableCell>
+                            &lt;TableCell className={classes.cellCO}>&lt;Typography variant='h6'>Value&lt;/Typography>&lt;/TableCell>
+                        &lt;/TableRow>
+                    &lt;/TableHead>
+                    &lt;TableBody>
+                        {result.map(row => {
+                            return (
+                                &lt;TableRow
+                                    className={classes.row}
+                                    key={row.id}
+                                    hover
+                                    onContextMenu={event => this.handleTableInModalRowClick(event, row.key, row.value)}
+                                >
+                                    &lt;TableCell className={classes.cellID} component="th" scope="row">
+                                        {row.key}
+                                    &lt;/TableCell>
+                                     &lt;TableCell className={classes.cellCO} >
+                                    {row.value.toString()}
+                                    &lt;/TableCell>
+                                &lt;/TableRow>
+                            );
+                        })}
+                        &lt;ClickActionOfTableInModal
+                            open={this.state.menuOpen}
+                            handleMenuClose={this.handleMenuClose.bind(this)}
+                            handleMenuClickClose={this.handleMenuClickClose.bind(this)}
+                            logType={this.state.logType}
+                            anchorEl = {this.state.anchorEl}
+                            textDisplay = 'Add this column into Result Table'
+                        />
+                    &lt;/TableBody>
+                &lt;/Table>
+            &lt;/Paper>
+
+        )
+    }
+
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        appendColumnFilter: (columnFilter) => {
+            const action = {
+                type: 'ADD_COLUMNFILTER',
+                payload: {columnFilter: columnFilter}
+            };
+            dispatch(action)
+        }
+    }
+}
+
+const ExportEnhance = compose(
+    withStyles(styles),
+    connect(function(state){}, mapDispatchToProps)
+);
+
+export default ExportEnhance(TableInModal);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AdminPage.html">AdminPage</a></li><li><a href="ClickActionOfTableInModal.html">ClickActionOfTableInModal</a></li><li><a href="ColorPickerItem.html">ColorPickerItem</a></li><li><a href="ControlPanel.html">ControlPanel</a></li><li><a href="DarkThemeSwitch.html">DarkThemeSwitch</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="DashBoardBar.html">DashBoardBar</a></li><li><a href="FilterField.html">FilterField</a></li><li><a href="SearchBarInModal.html">SearchBarInModal</a></li><li><a href="SettingsButton.html">SettingsButton</a></li><li><a href="SimpleModal.html">SimpleModal</a></li><li><a href="SimpleSnackbar.html">SimpleSnackbar</a></li><li><a href="TableInModal.html">TableInModal</a></li><li><a href="TablePaginationActions.html">TablePaginationActions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#changeAdminSetting">changeAdminSetting</a></li><li><a href="global.html#changeUserSetting">changeUserSetting</a></li><li><a href="global.html#connectToClient">connectToClient</a></li><li><a href="global.html#findAllLog">findAllLog</a></li><li><a href="global.html#findEventId">findEventId</a></li><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#getRespondWithQueryString">getRespondWithQueryString</a></li><li><a href="global.html#getTypeLog">getTypeLog</a></li><li><a href="global.html#onChangePickerColor">onChangePickerColor</a></li><li><a href="global.html#traceOrder">traceOrder</a></li><li><a href="global.html#userLogIn">userLogIn</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 07 2018 09:42:59 GMT+0800 (HKT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

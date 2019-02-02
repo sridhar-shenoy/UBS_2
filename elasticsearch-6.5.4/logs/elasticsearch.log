@@ -1,0 +1,4 @@
+[2019-02-01T08:33:40,261][INFO ][o.e.x.m.MlDailyMaintenanceService] [XLbMAEB] triggering scheduled [ML] maintenance tasks
+[2019-02-01T08:33:43,400][INFO ][o.e.x.m.a.TransportDeleteExpiredDataAction] [XLbMAEB] Deleting expired data
+[2019-02-01T08:33:43,995][INFO ][o.e.x.m.a.TransportDeleteExpiredDataAction] [XLbMAEB] Completed deletion of expired data
+[2019-02-01T08:33:44,187][INFO ][o.e.x.m.MlDailyMaintenanceService] [XLbMAEB] Successfully completed [ML] maintenance tasks

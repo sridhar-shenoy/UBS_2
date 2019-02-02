@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/utils/ColorPickerItem.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/utils/ColorPickerItem.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+import {SwatchesPicker} from 'react-color'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Typography from '@material-ui/core/Typography'
+import NoSsr from '@material-ui/core/NoSsr'
+import {connect} from 'react-redux'
+import propTypes from 'prop-types'
+
+/**
+ * This is the colorpicker component in the setting panel
+ */
+class ColorPickerItem extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    handleChangeComplete = (color) => {
+        // To update the state of the title
+        this.props.onChangePickerColor(color, this.props.type)
+    };
+
+    render() {
+        return (
+            &lt;div>
+                &lt;NoSsr>
+                    &lt;ExpansionPanel expanded={this.props.expanded} onChange={this.props.expandControl}>
+                        &lt;ExpansionPanelSummary expandIcon={&lt;ExpandMoreIcon />}>
+                            {/*Subheading of the color chooser*/}
+                            &lt;Typography variant='subheading' style={{color: getColor(this.props, this.props.type)}}>{this.props.title}&lt;/Typography>
+                        &lt;/ExpansionPanelSummary>
+                        &lt;ExpansionPanelDetails style={{textAlign: 'center'}}>
+                            {/*Color picker of the specified log type*/}
+                            &lt;SwatchesPicker color={getColor(this.props, this.props.type)} onChange={this.handleChangeComplete.bind(this)} style={{width: '100%'}} />
+                        &lt;/ExpansionPanelDetails>
+                    &lt;/ExpansionPanel>
+                &lt;/NoSsr>
+            &lt;/div>
+        )
+    }
+}
+
+ColorPickerItem.propTypes = {
+    title: propTypes.string,
+    type: propTypes.string,
+};
+
+/**
+ * Return color with respect to the log
+ * @param OwnProps - this.props object
+ * @param logType - type of log (proxy, event, gateway)
+ * @returns string - hex color string
+ */
+function getColor(OwnProps, logType){
+    switch (logType) {
+        case 'proxy':
+            return OwnProps.proxyColor;
+        case 'event':
+            return OwnProps.eventColor;
+        case 'gateway': return OwnProps.gatewayColor
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        proxyColor: (state.darkTheme ? state.logColor.darkProxy : state.logColor.lightProxy),
+        eventColor: (state.darkTheme ? state.logColor.darkEvent : state.logColor.lightEvent),
+        gatewayColor: (state.darkTheme ? state.logColor.darkGateway : state.logColor.lightGateway),
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        /**
+         * change color of the log of the specified type
+         * @param color - hex color string
+         * @param logType - type of log (proxy, event, gateway)
+         */
+        onChangePickerColor: (color, logType) => {
+            const action = {
+                type: 'CHANGE_LOGCOLOR',
+                payload: {logType: logType, colorHex: color.hex}
+            };
+            dispatch(action)
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorPickerItem)
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AdminPage.html">AdminPage</a></li><li><a href="ClickActionOfTableInModal.html">ClickActionOfTableInModal</a></li><li><a href="ColorPickerItem.html">ColorPickerItem</a></li><li><a href="ControlPanel.html">ControlPanel</a></li><li><a href="DarkThemeSwitch.html">DarkThemeSwitch</a></li><li><a href="DashBoard.html">DashBoard</a></li><li><a href="DashBoardBar.html">DashBoardBar</a></li><li><a href="FilterField.html">FilterField</a></li><li><a href="SearchBarInModal.html">SearchBarInModal</a></li><li><a href="SettingsButton.html">SettingsButton</a></li><li><a href="SimpleModal.html">SimpleModal</a></li><li><a href="SimpleSnackbar.html">SimpleSnackbar</a></li><li><a href="TableInModal.html">TableInModal</a></li><li><a href="TablePaginationActions.html">TablePaginationActions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#changeAdminSetting">changeAdminSetting</a></li><li><a href="global.html#changeUserSetting">changeUserSetting</a></li><li><a href="global.html#connectToClient">connectToClient</a></li><li><a href="global.html#findAllLog">findAllLog</a></li><li><a href="global.html#findEventId">findEventId</a></li><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#getRespondWithQueryString">getRespondWithQueryString</a></li><li><a href="global.html#getTypeLog">getTypeLog</a></li><li><a href="global.html#onChangePickerColor">onChangePickerColor</a></li><li><a href="global.html#traceOrder">traceOrder</a></li><li><a href="global.html#userLogIn">userLogIn</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 07 2018 09:42:59 GMT+0800 (HKT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
